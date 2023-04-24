@@ -1,0 +1,67 @@
+1)Trigger which will count row of this table 
+where insertig new parametres:
+
+Create or replace trigger rowcount_staff
+Before insert on staff
+for each row
+DECLARE 
+row_count NUMBER;
+begin
+Select count(*) into row_count from staff;
+if inserting then 
+dbms_output.put_line('Row count of this table:' || row_count);
+end if;
+end;
+
+
+insert into staff 
+(staff_id, name, email, speciality, password, phone)
+values(51, 'Sabina Turgan', 'sab@mail.ru', 'Adviser', 'Sab123', '7777777777')
+
+delete from staff where staff_id = 51
+
+-------------------------------------------------------------------------
+2)This trigger will works when we get products 
+(means availibility turns to 'true' from 'false')
+it's helps us to update expiration date with today's date:
+
+create or replace trigger expiration_date
+before update of availability on product
+for each row
+begin
+if :new.availability = 'true' then
+:NEW.expiration_date := SYSDATE;
+end if;
+end;
+
+update product 
+set availability = 'true'
+where product_id = 50;
+
+update product 
+set expiration_date = '12/10/2021'
+where product_id = 50;
+
+select * from product where product_id = 50
+--------------------------------------------------------------------------
+3)Also similar as previous trigger, will write 
+expiration date with today's date when we 
+insert new product:
+
+create or replace trigger expiration_date_insert
+before insert on product
+for each row
+begin
+if :new.availability = 'true' then
+:new.expiration_date := CURRENT_DATE;
+end if;
+end;
+
+drop trigger expiration_date_insert
+
+insert into product(product_id, name, price, age_group, description, category, availability, unity)
+values(51, 'ospamoks', '2000', '18', 'antibiotics', 'virus', 'true', 'mg')
+
+select * from product where product_id = 51
+
+delete from product where product_id = 51
