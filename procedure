@@ -1,0 +1,39 @@
+1)The procedure is the cost of the products that were ordered with the quantity.  We multiply the quantity of each items by the price and group by  order ID
+
+CREATE OR REPLACE PROCEDURE basket_total(
+    v_No_order IN item_1.NO_order%TYPE,
+    v_order_total OUT NUMBER
+)
+IS
+BEGIN
+    SELECT SUM(item_1.quantity * product.price) INTO v_order_total
+    FROM item_1
+    JOIN product ON item_1.product_id = product.product_id
+    WHERE item_1.No_order = v_NO_order
+    GROUP BY item_1.NO_order;
+
+    DBMS_OUTPUT.PUT_LINE('Total sum for items ' || v_No_order || ': $' || v_order_total);
+END;
+
+DECLARE
+    v_order_total NUMBER;
+BEGIN
+    basket_total(79, v_order_total);
+    DBMS_OUTPUT.PUT_LINE('Total sum for order 79: $' || v_order_total);
+END;
+Thanks to this procedure , users can see how many items are in his ıtem*basket.  This makes it very convenient for the user to navigate how many items are in the basket.
+create or replace PROCEDURE check_item_basket(p_item_1_id IN NUMBER)
+IS
+    v_basket_count NUMBER;
+BEGIN
+    SELECT quantity INTO v_basket_count
+    FROM item_1
+    WHERE item_1_id = p_item_1_id;
+
+    IF SQL%ROWCOUNT = 1 THEN
+        DBMS_OUTPUT.PUT_LINE('The basket with ID ' || p_item_1_id || ' contains ' || v_basket_count || ' items.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('The basket with ID ' || p_item_1_id || ' not found.');
+    END IF;
+END;
+/
