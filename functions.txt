@@ -1,1 +1,42 @@
-wjehfewhferhfuehfuhrfhurhfuhrfheruhfhr
+1) Function to get customer information by ID
+
+DECLARE
+v_customer customer%ROWTYPE;
+BEGIN
+v_customer := get_customer_info(1);
+DBMS_OUTPUT.PUT_LINE('Name: ' || v_customer.name);
+DBMS_OUTPUT.PUT_LINE('Email: ' || v_customer.email);
+END;
+
+2)
+ Function for getting staff who works in the same speciality:
+
+
+DECLARE
+  v_staff staff%ROWTYPE;
+BEGIN
+  v_staff := get_staff('Occupational Therapist');
+  DBMS_OUTPUT.PUT_LINE(v_staff.staff_id || ' - ' || v_staff.name || ' - ' || v_staff.speciality);
+END;
+
+3)function which counts the number of records
+
+
+DECLARE 
+  Res NUMBER;
+BEGIN
+  Res := count_customers();
+  DBMS_OUTPUT.PUT_LINE('Count of customers is ' || Res);
+END;
+
+
+4) Function to get product information by ID
+
+
+DECLARE
+v_product product%ROWTYPE;
+BEGIN
+v_product := get_product_info(1);
+DBMS_OUTPUT.PUT_LINE('Name: ' || v_product.name);
+DBMS_OUTPUT.PUT_LINE('Price: ' || v_product.price);
+END;
