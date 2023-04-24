@@ -1,0 +1,38 @@
+create or replace trigger ITEM
+before insert on item_1
+for each row
+declare 
+too_many_item exception;
+begin
+IF :NEW.quantity > 11 THEN 
+    RAISE too_many_item; 
+END IF;   
+EXCEPTION 
+WHEN too_many_item THEN 
+    dbms_output.put_line('There can be no more than 10 items in your basket');    
+WHEN others THEN 
+    dbms_output.put_line('Error! Try again'); 
+END;
+
+
+insert into item_1(ITEM_1_ID, QUANTITY, NO_ORDER, PRODUCT_ID)
+values(55, 12 , 78 , 5)
+
+create or replace trigger CHARACTER
+before insert on product
+for each row
+declare 
+invalid_name exception;
+begin
+IF length(:NEW.name) < 5 THEN 
+    RAISE invalid_name; 
+END IF;    
+EXCEPTION 
+WHEN invalid_name THEN 
+    dbms_output.put_line('Product name must be bigger than 5 letters');    
+WHEN others THEN 
+    dbms_output.put_line('Error!'); 
+END;
+
+insert into product(product_id, name, price, age_group, description, category, availability, unity)
+values(52, 'osp', '2000', '18', 'antibiotics', 'virus', 'true', 'mg')
